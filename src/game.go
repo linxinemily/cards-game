@@ -2,6 +2,8 @@ package src
 
 type Game struct {
 	round int
+	deck  Deck
+	players []*Player
 }
 
 func (g *Game) Start() {

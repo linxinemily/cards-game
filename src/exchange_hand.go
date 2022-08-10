@@ -2,6 +2,8 @@ package src
 
 type ExchangeHand struct {
 	shouldRollbackRound int
+	p1                  Player
+	p2                  Player
 }
 
 func NewExchangeHand(shouldRollbackRound int) (e *ExchangeHand) {

@@ -13,6 +13,9 @@ type PlayerAttribute struct {
 	exchangeChance int
 	points         int
 	name           string
+	game           Game
+	hand           []*Card
+	exchangeHand   ExchangeHand
 }
 
 func NewPlayerAttribute() (pa *PlayerAttribute) {
