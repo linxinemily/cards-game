@@ -2,12 +2,12 @@ package src
 
 type AIPlayer struct {
 	AbstractPlayer
-	*PlayerAttribute
+	playerAttribute *PlayerAttribute
 }
 
 func NewAIPlayer() (p *AIPlayer) {
 	return &AIPlayer{
-		PlayerAttribute: NewPlayerAttribute(),
+		playerAttribute: NewPlayerAttribute(),
 	}
 }
 

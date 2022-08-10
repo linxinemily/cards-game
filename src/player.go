@@ -7,18 +7,18 @@ type Player interface {
 	Show() (card Card)
 }
 
-type AbstractPlayer struct {}
+type AbstractPlayer struct{}
 
 type PlayerAttribute struct {
-	ExchangeChance int
-	Points         int
-	Name           string
+	exchangeChance int
+	points         int
+	name           string
 }
 
 func NewPlayerAttribute() (pa *PlayerAttribute) {
 	return &PlayerAttribute{
-		ExchangeChance: 1,
-		Points:         0,
+		exchangeChance: 1,
+		points:         0,
 	}
 }
 

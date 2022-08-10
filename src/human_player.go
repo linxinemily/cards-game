@@ -2,12 +2,12 @@ package src
 
 type HumanPlayer struct {
 	AbstractPlayer
-	*PlayerAttribute
+	playerAttribute *PlayerAttribute
 }
 
 func NewHumanPlayer() (p *HumanPlayer) {
 	return &HumanPlayer{
-		PlayerAttribute: NewPlayerAttribute(),
+		playerAttribute: NewPlayerAttribute(),
 	}
 }
 
