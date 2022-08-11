@@ -1,4 +1,4 @@
-package src
+package domain
 
 type Player interface {
 	NameSelf()

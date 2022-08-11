@@ -1,7 +1,7 @@
-package src
+package domain
 
 import (
-	"bigger-or-smaller-game/src/enum"
+	"bigger-or-smaller-game/domain/enum"
 )
 
 type Card struct {

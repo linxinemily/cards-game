@@ -1,8 +1,8 @@
-package src
+package domain
 
 type Game struct {
-	round int
-	deck  Deck
+	round   int
+	deck    Deck
 	players []*Player
 }
 
