@@ -12,13 +12,13 @@ const (
 func (s Suit) String() string {
 	switch s {
 	case Club:
-		return "Club"
+		return "♣︎"
 	case Diamond:
-		return "Diamond"
+		return "♦︎"
 	case Heart:
-		return "Heart"
+		return "♥︎"
 	case Spade:
-		return "Spade"
+		return "♠️"
 	default:
 		return "Unknown"
 	}
