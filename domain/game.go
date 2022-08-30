@@ -20,6 +20,21 @@ func NewGame() *Game {
 }
 
 func (g *Game) Start() {
+	g.init()
+
+	g.playerDrawCards()
+
+	for {
+		if !g.hasNextRound() {
+			break
+		}
+		g.takeRound()
+	}
+
+	g.end()
+}
+
+func (g *Game) init() {
 
 	p1 := NewAIPlayer()
 	p2 := NewAIPlayer()
@@ -39,7 +54,7 @@ func (g *Game) Start() {
 
 }
 
-func (g *Game) PlayerDrawCards() {
+func (g *Game) playerDrawCards() {
 	count := 0
 	for {
 		card := g.deck.DrawCard()
@@ -53,7 +68,7 @@ func (g *Game) PlayerDrawCards() {
 	}
 }
 
-func (g *Game) TakeRound() {
+func (g *Game) takeRound() {
 	res := make(map[string]*Card)
 	var winner Player
 	var maxCard *Card
@@ -62,21 +77,14 @@ func (g *Game) TakeRound() {
 	fmt.Printf("Round %d \n", g.round)
 	fmt.Println("--------------------")
 
-	// check if there are exchange hands should be roll back
 	for _, p := range g.players {
+		fmt.Printf("It's %s's turn \n", p.GetName())
 
+		// check if there are exchange hands should be roll back
 		exchangeHand := p.GetExchangeHand()
-		if exchangeHand == nil {
-			continue
-		}
-		if exchangeHand.haveToRollback(g.round) {
+		if exchangeHand != nil && exchangeHand.haveToRollback(g.round) {
 			exchangeHand.Rollback()
 		}
-	}
-
-	for _, p := range g.players {
-
-		fmt.Printf("It's %s's turn \n", p.GetName())
 
 		if p.CanUseExchangeHand() && p.ToUseExchangeChance() {
 			exchangePlayer := p.ChoosePlayerForExchange()
@@ -113,7 +121,7 @@ func (g *Game) TakeRound() {
 	g.round += 1
 }
 
-func (g *Game) End() {
+func (g *Game) end() {
 	// calculate result and declare the winner
 	var winner Player
 	var highestPoints int
@@ -128,6 +136,6 @@ func (g *Game) End() {
 
 }
 
-func (g *Game) HasNextRound() bool {
+func (g *Game) hasNextRound() bool {
 	return g.round <= g.totalRound
 }

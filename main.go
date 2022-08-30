@@ -11,15 +11,4 @@ func main() {
 	game := domain.NewGame()
 
 	game.Start()
-
-	game.PlayerDrawCards()
-
-	for {
-		if !game.HasNextRound() {
-			break
-		}
-		game.TakeRound()
-	}
-
-	game.End()
 }
