@@ -4,19 +4,19 @@ import (
 	"bigger-or-smaller-game/domain/enum"
 )
 
-type Card struct {
+type ShowdownCard struct {
 	Rank enum.Rank
 	Suit enum.Suit
 }
 
-func NewCard(rank enum.Rank, suit enum.Suit) (c *Card) {
-	return &Card{
+func NewCard(rank enum.Rank, suit enum.Suit) (c *ShowdownCard) {
+	return &ShowdownCard{
 		Rank: rank,
 		Suit: suit,
 	}
 }
 
-func (c *Card) CompareTo(card *Card) int {
+func (c ShowdownCard) CompareTo(card ShowdownCard) int {
 
 	if c.Rank > card.Rank {
 		return 1

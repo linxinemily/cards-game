@@ -6,23 +6,24 @@ import (
 	"time"
 )
 
-type AIPlayer struct {
-	AbstractPlayer
+type ShowdownAIPlayer struct {
+	AbstractShowdownPlayer
 }
 
-func NewAIPlayer() (p *AIPlayer) {
-	return &AIPlayer{
-		AbstractPlayer: NewAbstractPlayer(),
+func NewShowdownAIPlayer() (p *ShowdownAIPlayer) {
+	showdownAIPlayer := &ShowdownAIPlayer{
+		AbstractShowdownPlayer: NewAbstractShowdownPlayer(),
 	}
+	return showdownAIPlayer
 }
 
-func (p *AIPlayer) NameSelf() string {
+func (p *ShowdownAIPlayer) NameSelf() string {
 	rand.Seed(time.Now().UnixNano())
 	p.name = fmt.Sprintf("AI Player %d", rand.Intn(999999))
 	return p.name
 }
 
-func (p *AIPlayer) ToUseExchangeChance() bool {
+func (p *ShowdownAIPlayer) ToUseExchangeChance() bool {
 	rand.Seed(time.Now().UnixNano())
 	res := rand.Intn(9)
 
@@ -33,14 +34,13 @@ func (p *AIPlayer) ToUseExchangeChance() bool {
 	}
 }
 
-func (p *AIPlayer) ChoosePlayerForExchange() (player Player) {
+func (p *ShowdownAIPlayer) ChoosePlayerForExchange() (showdownPlayer ShowdownPlayer) {
 	rand.Seed(time.Now().UnixNano())
 	randIndex := rand.Intn(2)
 
-	var playersExceptSelf []Player
-
+	var playersExceptSelf []ShowdownPlayer
 	for _, otherPlayer := range p.game.players {
-		if otherPlayer != p {
+		if otherPlayer.GetName() != p.name {
 			playersExceptSelf = append(playersExceptSelf, otherPlayer)
 		}
 	}
@@ -48,7 +48,7 @@ func (p *AIPlayer) ChoosePlayerForExchange() (player Player) {
 	return playersExceptSelf[randIndex]
 }
 
-func (p *AIPlayer) Show() *Card {
+func (p *ShowdownAIPlayer) Show() *ShowdownCard {
 	rand.Seed(time.Now().UnixNano())
 
 	var i int

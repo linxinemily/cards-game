@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("🃏 Bigger or Smaller Game")
 
-	game := domain.NewGame()
+	game := domain.NewShowdownGame()
 
 	game.Start()
 }

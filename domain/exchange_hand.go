@@ -4,11 +4,11 @@ import "fmt"
 
 type ExchangeHand struct {
 	shouldRollbackRound int
-	p1                  Player
-	p2                  Player
+	p1                  ShowdownPlayer
+	p2                  ShowdownPlayer
 }
 
-func NewExchangeHand(shouldRollbackRound int, p1 Player, p2 Player) (e *ExchangeHand) {
+func NewExchangeHand(shouldRollbackRound int, p1 ShowdownPlayer, p2 ShowdownPlayer) (e *ExchangeHand) {
 	return &ExchangeHand{
 		shouldRollbackRound,
 		p1,

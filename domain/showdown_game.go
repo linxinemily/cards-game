@@ -4,57 +4,40 @@ import (
 	"fmt"
 )
 
-type Game struct {
-	round      int
-	deck       *Deck
-	players    []Player
+type ShowdownGame struct {
+	AbstractGame[ShowdownCard, ShowdownPlayer]
 	totalRound int
 }
 
-func NewGame() *Game {
-	return &Game{
-		round:      1,
-		deck:       NewDeck(),
+func NewShowdownGame() *ShowdownGame {
+
+	showdownGame := &ShowdownGame{
 		totalRound: 13,
 	}
+
+	showdownGame.AbstractGame = *NewAbstractGame[ShowdownCard, ShowdownPlayer]()
+
+	showdownGame.AbstractGame.initPlayers = showdownGame.initPlayers
+	showdownGame.AbstractGame.hasNextRound = showdownGame.hasNextRound
+	showdownGame.AbstractGame.takeRound = showdownGame.takeRound
+	showdownGame.AbstractGame.end = showdownGame.end
+	showdownGame.deck = NewShowdownDeck()
+
+	return showdownGame
 }
 
-func (g *Game) Start() {
-	g.init()
+func (g *ShowdownGame) initPlayers() []ShowdownPlayer {
+	p1 := NewShowdownAIPlayer()
+	p2 := NewShowdownAIPlayer()
+	p3 := NewShowdownAIPlayer()
+	p4 := NewShowdownHumanPlayer()
 
-	g.playerDrawCards()
+	players := []ShowdownPlayer{p1, p2, p3, p4}
 
-	for {
-		if !g.hasNextRound() {
-			break
-		}
-		g.takeRound()
-	}
-
-	g.end()
+	return players
 }
 
-func (g *Game) init() {
-
-	p1 := NewAIPlayer()
-	p2 := NewAIPlayer()
-	p3 := NewAIPlayer()
-	p4 := NewHumanPlayer()
-
-	players := []Player{p1, p2, p3, p4}
-
-	for _, p := range players {
-		name := p.NameSelf()
-		fmt.Printf("Player %s is added. \n", name)
-		g.players = append(g.players, p)
-		p.SetGame(g)
-	}
-
-	g.deck.Shuffle()
-
-}
-
-func (g *Game) playerDrawCards() {
+func (g *ShowdownGame) playerDrawCards() {
 	count := 0
 	for {
 		card := g.deck.DrawCard()
@@ -68,10 +51,10 @@ func (g *Game) playerDrawCards() {
 	}
 }
 
-func (g *Game) takeRound() {
-	res := make(map[string]*Card)
-	var winner Player
-	var maxCard *Card
+func (g *ShowdownGame) takeRound() {
+	res := make(map[string]*ShowdownCard)
+	var winner ShowdownPlayer
+	var maxCard *ShowdownCard
 
 	fmt.Println("--------------------")
 	fmt.Printf("Round %d \n", g.round)
@@ -102,9 +85,9 @@ func (g *Game) takeRound() {
 		}
 
 		if maxCard == nil {
-			maxCard = &Card{} // dummy
+			maxCard = &ShowdownCard{} // dummy
 		}
-		if card.CompareTo(maxCard) > 0 {
+		if card.CompareTo(*maxCard) > 0 {
 			maxCard = card
 			winner = p
 		}
@@ -121,9 +104,9 @@ func (g *Game) takeRound() {
 	g.round += 1
 }
 
-func (g *Game) end() {
+func (g *ShowdownGame) end() {
 	// calculate result and declare the winner
-	var winner Player
+	var winner ShowdownPlayer
 	var highestPoints int
 	for _, p := range g.players {
 		if p.GetPoints() > highestPoints {
@@ -136,6 +119,6 @@ func (g *Game) end() {
 
 }
 
-func (g *Game) hasNextRound() bool {
+func (g *ShowdownGame) hasNextRound() bool {
 	return g.round <= g.totalRound
 }

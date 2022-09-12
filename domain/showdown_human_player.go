@@ -8,26 +8,32 @@ import (
 	"strconv"
 )
 
-type HumanPlayer struct {
-	AbstractPlayer
+type ShowdownHumanPlayer struct {
+	AbstractShowdownPlayer
 }
 
-func NewHumanPlayer() (p *HumanPlayer) {
-	return &HumanPlayer{
-		AbstractPlayer: NewAbstractPlayer(),
+func NewShowdownHumanPlayer() (p *ShowdownHumanPlayer) {
+	showdownHumanPlayer := &ShowdownHumanPlayer{
+		AbstractShowdownPlayer: NewAbstractShowdownPlayer(),
 	}
+	// showdownHumanPlayer.AbstractPlayer.NameSelf = showdownHumanPlayer.NameSelf
+	// showdownHumanPlayer.AbstractShowdownPlayer.ChoosePlayerForExchange = showdownHumanPlayer.ChoosePlayerForExchange
+	// showdownHumanPlayer.AbstractShowdownPlayer.ToUseExchangeChance = showdownHumanPlayer.ToUseExchangeChance
+	// showdownHumanPlayer.AbstractShowdownPlayer.Show = showdownHumanPlayer.Show
+
+	return showdownHumanPlayer
 }
 
-func (p *HumanPlayer) NameSelf() string {
+func (p *ShowdownHumanPlayer) NameSelf() string {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Enter player name:")
 	scanner.Scan()
 	name := scanner.Text()
-	p.AbstractPlayer.name = name
+	p.AbstractShowdownPlayer.name = name
 	return name
 }
 
-func (p *HumanPlayer) ToUseExchangeChance() bool {
+func (p *ShowdownHumanPlayer) ToUseExchangeChance() bool {
 
 	var res bool
 
@@ -42,12 +48,12 @@ func (p *HumanPlayer) ToUseExchangeChance() bool {
 	return res
 }
 
-func (p *HumanPlayer) ChoosePlayerForExchange() (player Player) {
+func (p *ShowdownHumanPlayer) ChoosePlayerForExchange() (showdownPlayer ShowdownPlayer) {
 
-	var playersExceptSelf []Player
+	var playersExceptSelf []ShowdownPlayer
 
 	for _, otherPlayer := range p.game.players {
-		if otherPlayer != p {
+		if otherPlayer.GetName() != p.name {
 			playersExceptSelf = append(playersExceptSelf, otherPlayer)
 		}
 	}
@@ -80,12 +86,12 @@ func (p *HumanPlayer) ChoosePlayerForExchange() (player Player) {
 	return playersExceptSelf[intVar]
 }
 
-func (p *HumanPlayer) Show() (card *Card) {
+func (p *ShowdownHumanPlayer) Show() (card *ShowdownCard) {
 
 	first := true
 	var err error
 	var intVar int
-	var removed *Card
+	var removed *ShowdownCard
 
 	for {
 		if err == nil && !first {

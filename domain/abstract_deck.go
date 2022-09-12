@@ -1,35 +1,15 @@
 package domain
 
 import (
-	"bigger-or-smaller-game/domain/enum"
 	"math/rand"
 	"time"
 )
 
-type Deck struct {
-	cards []*Card
+type Deck[T any] struct {
+	cards []*T
 }
 
-func NewDeck() (d *Deck) {
-	cards := make([]*Card, 52)
-	var count int
-	for suit := enum.Suit(0); suit < enum.Spade+1; suit++ {
-		for rank := enum.Rank(0); rank < enum.A+1; rank++ {
-			cards[count] = NewCard(rank, suit)
-			count++
-		}
-	}
-
-	return &Deck{
-		cards: cards,
-	}
-}
-
-func (d *Deck) getCards() []*Card {
-	return d.cards
-}
-
-func (d *Deck) DrawCard() *Card {
+func (d *Deck[T]) DrawCard() *T {
 	// check cards length
 	if len(d.cards) <= 0 {
 		return nil
@@ -52,16 +32,20 @@ func (d *Deck) DrawCard() *Card {
 	return card
 }
 
-func (d *Deck) removeCardFromDeck(i int) *Card {
+func (d *Deck[T]) removeCardFromDeck(i int) *T {
 	removed := d.cards[i]
 	d.cards[i] = d.cards[len(d.cards)-1]
 	d.cards = d.cards[:len(d.cards)-1]
 	return removed
 }
 
-func (d *Deck) Shuffle() {
+func (d *Deck[T]) Shuffle() {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(d.cards), func(i, j int) {
 		d.cards[i], d.cards[j] = d.cards[j], d.cards[i]
 	})
+}
+
+func (d *Deck[T]) getCards() []*T {
+	return d.cards
 }
