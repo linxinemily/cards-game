@@ -37,20 +37,6 @@ func (g *ShowdownGame) initPlayers() []ShowdownPlayer {
 	return players
 }
 
-func (g *ShowdownGame) playerDrawCards() {
-	count := 0
-	for {
-		card := g.deck.DrawCard()
-		if card == nil {
-			break
-		}
-
-		p := g.players[count%4]
-		p.AddCardIntoHand(card)
-		count += 1
-	}
-}
-
 func (g *ShowdownGame) takeRound() {
 	res := make(map[string]*ShowdownCard)
 	var winner ShowdownPlayer

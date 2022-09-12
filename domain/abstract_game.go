@@ -24,11 +24,10 @@ func NewAbstractGame[C Card[C], P Player[C]]() *AbstractGame[C, P] {
 }
 
 type AbstractGame[C Card[C], P Player[C]] struct {
-	round       int
-	deck        *Deck[C]
-	players     []P
-	initPlayers func() []P
-	// playerDrawCards func()
+	round                int
+	deck                 *Deck[C]
+	players              []P
+	initPlayers          func() []P
 	shouldBreakDrawCards func(deck Deck[C], count int) bool
 	hasNextRound         func() bool
 	takeRound            func()

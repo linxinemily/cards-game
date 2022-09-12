@@ -22,9 +22,6 @@ func (p *AbstractPlayer[C, P]) GetName() string {
 }
 
 func (p *AbstractPlayer[C, P]) SetGame(game any) {
-
 	other := game.(*AbstractGame[C, P])
-
 	p.game = other
-
 }
