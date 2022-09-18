@@ -1,4 +1,4 @@
-package enum
+package showdown_enum
 
 type Suit int
 

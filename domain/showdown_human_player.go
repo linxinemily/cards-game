@@ -13,15 +13,9 @@ type ShowdownHumanPlayer struct {
 }
 
 func NewShowdownHumanPlayer() (p *ShowdownHumanPlayer) {
-	showdownHumanPlayer := &ShowdownHumanPlayer{
+	return &ShowdownHumanPlayer{
 		AbstractShowdownPlayer: NewAbstractShowdownPlayer(),
 	}
-	// showdownHumanPlayer.AbstractPlayer.NameSelf = showdownHumanPlayer.NameSelf
-	// showdownHumanPlayer.AbstractShowdownPlayer.ChoosePlayerForExchange = showdownHumanPlayer.ChoosePlayerForExchange
-	// showdownHumanPlayer.AbstractShowdownPlayer.ToUseExchangeChance = showdownHumanPlayer.ToUseExchangeChance
-	// showdownHumanPlayer.AbstractShowdownPlayer.Show = showdownHumanPlayer.Show
-
-	return showdownHumanPlayer
 }
 
 func (p *ShowdownHumanPlayer) NameSelf() string {
@@ -29,7 +23,7 @@ func (p *ShowdownHumanPlayer) NameSelf() string {
 	fmt.Println("Enter player name:")
 	scanner.Scan()
 	name := scanner.Text()
-	p.AbstractShowdownPlayer.name = name
+	p.name = name
 	return name
 }
 

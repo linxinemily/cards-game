@@ -49,3 +49,7 @@ func (d *Deck[T]) Shuffle() {
 func (d *Deck[T]) getCards() []*T {
 	return d.cards
 }
+
+func (d *Deck[T]) setCards(cards []*T) {
+	d.cards = cards
+} 

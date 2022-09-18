@@ -32,6 +32,7 @@ type AbstractGame[C Card[C], P Player[C]] struct {
 	hasNextRound         func() bool
 	takeRound            func()
 	end                  func()
+	stack                []*C
 }
 
 func (g *AbstractGame[C, P]) Start() {
@@ -72,7 +73,7 @@ func (g *AbstractGame[C, P]) playerDrawCards() {
 		}
 		card := g.deck.DrawCard()
 		p := g.players[count%4]
-		p.AddCardIntoHand(card)
+		p.AddCardIntoHand(*card)
 		count += 1
 	}
 }

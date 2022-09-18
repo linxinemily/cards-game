@@ -1,15 +1,15 @@
 package domain
 
 import (
-	"bigger-or-smaller-game/domain/enum"
+	"bigger-or-smaller-game/domain/enum/showdown"
 )
 
 type ShowdownCard struct {
-	Rank enum.Rank
-	Suit enum.Suit
+	Rank showdown_enum.Rank
+	Suit showdown_enum.Suit
 }
 
-func NewCard(rank enum.Rank, suit enum.Suit) (c *ShowdownCard) {
+func NewShowdownCard(rank showdown_enum.Rank, suit showdown_enum.Suit) (c *ShowdownCard) {
 	return &ShowdownCard{
 		Rank: rank,
 		Suit: suit,

@@ -1,141 +1,107 @@
 package domain
 
-// import (
-// 	"fmt"
-// )
+import "fmt"
 
-// type UnoGame struct {
-// 	round      int
-// 	deck       *Deck
-// 	players    []ShowdownPlayer
-// 	totalRound int
-// }
+type UnoGame struct {
+	AbstractGame[UnoCard, UnoPlayer]
+	winner *UnoPlayer
+}
 
-// func NewUnoGame() *UnoGame {
-// 	return &UnoGame{
-// 		round:      1,
-// 		deck:       NewDeck(),
-// 		totalRound: 13,
-// 	}
-// }
+func NewUnoGame() *UnoGame {
+	unoGame := &UnoGame{
+		AbstractGame: *NewAbstractGame[UnoCard, UnoPlayer](),
+	}
 
-// func (g *UnoGame) Start() {
-// 	g.init()
+	unoGame.AbstractGame.initPlayers = unoGame.initPlayers
+	unoGame.AbstractGame.hasNextRound = unoGame.hasNextRound
+	unoGame.AbstractGame.takeRound = unoGame.takeRound
+	unoGame.AbstractGame.end = unoGame.end
 
-// 	g.playerDrawCards()
+	unoGame.AbstractGame.shouldBreakDrawCards = unoGame.shouldBreakDrawCards
+	unoGame.deck = NewUnoDeck()
 
-// 	for {
-// 		if !g.hasNextRound() {
-// 			break
-// 		}
-// 		g.takeRound()
-// 	}
+	return unoGame
+}
 
-// 	g.end()
-// }
+func (g *UnoGame) initPlayers() []UnoPlayer {
+	p1 := NewUnoAIPlayer()
+	p2 := NewUnoAIPlayer()
+	p3 := NewUnoAIPlayer()
+	p4 := NewUnoHumanPlayer()
 
-// func (g *UnoGame) init() {
+	players := []UnoPlayer{p1, p2, p3, p4}
 
-// 	p1 := NewShowdownAIPlayer()
-// 	p2 := NewShowdownAIPlayer()
-// 	p3 := NewShowdownAIPlayer()
-// 	p4 := NewShowdownHumanPlayer()
+	return players
+}
 
-// 	players := []ShowdownPlayer{p1, p2, p3, p4}
+func (g *UnoGame) shouldBreakDrawCards(deck Deck[UnoCard], count int) bool {
+	return len(deck.getCards())-4*5 <= 0
+}
 
-// 	for _, p := range players {
-// 		name := p.NameSelf()
-// 		fmt.Printf("Player %s is added. \n", name)
-// 		g.players = append(g.players, p)
-// 		p.SetGame(g)
-// 	}
+func (g *UnoGame) takeRound() {
 
-// 	g.deck.Shuffle()
+	fmt.Println("--------------------")
+	fmt.Printf("Round %d \n", g.round)
+	fmt.Println("--------------------")
 
-// }
+	topCard := g.GetTopCardFromStack()
+	if topCard == nil {
+		fmt.Println("there are no card in stack, draw a card from deck")
+		topCard = g.safeDrawCard()
+		g.stack = append(g.stack, topCard)
+	}
+	fmt.Printf("Top card color: %s, number: %s \n", topCard.Color, topCard.Number)
 
-// func (g *UnoGame) playerDrawCards() {
-// 	count := 0
-// 	for {
-// 		card := g.deck.DrawCard()
-// 		if card == nil {
-// 			break
-// 		}
+	for _, p := range g.players {
+		fmt.Printf("It's %s's turn \n", p.GetName())
 
-// 		p := g.players[count%4]
-// 		p.AddCardIntoHand(card)
-// 		count += 1
-// 	}
-// }
+		//玩家沒有可出的牌
+		if p.hasNoCardCanShow(*g.GetTopCardFromStack()) {
+			// 玩家就必須從牌堆中抽一張牌，如果此時牌堆空了，則會先把檯面上除了最新的牌以外的牌放回牌堆中進行洗牌
+			newCard := g.safeDrawCard()
+			p.SetHand(append(p.GetHand(), *newCard))
 
-// func (g *UnoGame) takeRound() {
-// 	res := make(map[string]*Card)
-// 	var winner ShowdownPlayer
-// 	var maxCard *Card
+		} else {
+			card := p.Show()
+			if len(p.GetHand()) == 0 {
+				fmt.Printf("Player %s has no more hand.\n", p.GetName())
+				g.winner = &p
+				return
+			} else {
+				fmt.Printf("Player: %s shows card, color: %s, number: %s \n", p.GetName(), card.Color, card.Number)
+				g.stack = append(g.stack, card)
+			}
 
-// 	fmt.Println("--------------------")
-// 	fmt.Printf("Round %d \n", g.round)
-// 	fmt.Println("--------------------")
+		}
+	}
+	g.round += 1
 
-// 	for _, p := range g.players {
-// 		fmt.Printf("It's %s's turn \n", p.GetName())
+}
 
-// 		// check if there are exchange hands should be roll back
-// 		exchangeHand := p.GetExchangeHand()
-// 		if exchangeHand != nil && exchangeHand.haveToRollback(g.round) {
-// 			exchangeHand.Rollback()
-// 		}
+func (g *UnoGame) end() {
+	w := *g.winner
+	fmt.Printf("The winner is %s \n", w.GetName())
+}
 
-// 		if p.CanUseExchangeHand() && p.ToUseExchangeChance() {
-// 			exchangePlayer := p.ChoosePlayerForExchange()
-// 			fmt.Printf("Player %s exchange hand with %s \n", p.GetName(), exchangePlayer.GetName())
+func (g *UnoGame) hasNextRound() bool {
+	return g.winner == nil
+}
 
-// 			exchangeHand := NewExchangeHand(g.round+3, p, exchangePlayer)
-// 			p.SetExchangeHand(exchangeHand)
-// 		}
+func (g *UnoGame) safeDrawCard() *UnoCard {
+	newCard := g.deck.DrawCard()
 
-// 		card := p.Show()
-// 		res[p.GetName()] = card
-// 		if card == nil {
-// 			fmt.Printf("Player %s has no more hand \n", p.GetName())
-// 			continue
-// 		}
+	if newCard != nil {
+		return newCard
+	}
+	g.deck.setCards(g.stack[:len(g.stack)-1])
+	g.deck.Shuffle()
 
-// 		if maxCard == nil {
-// 			maxCard = &Card{} // dummy
-// 		}
-// 		if card.CompareTo(maxCard) > 0 {
-// 			maxCard = card
-// 			winner = p
-// 		}
-// 	}
+	return g.deck.DrawCard()
+}
 
-// 	// print result
-// 	for name, card := range res {
-// 		if card != nil {
-// 			fmt.Printf("Player: %s shows card, rank: %s, suit: %s \n", name, card.Rank, card.Suit)
-// 		}
-// 	}
-// 	fmt.Printf("The winner of round %d is %s \n", g.round, winner.GetName())
-// 	winner.SetPoints(winner.GetPoints() + 1)
-// 	g.round += 1
-// }
-
-// func (g *UnoGame) end() {
-// 	// calculate result and declare the winner
-// 	var winner ShowdownPlayer
-// 	var highestPoints int
-// 	for _, p := range g.players {
-// 		if p.GetPoints() > highestPoints {
-// 			highestPoints = p.GetPoints()
-// 			winner = p
-// 		}
-// 		fmt.Printf("Player: %s's points: %d\n", p.GetName(), p.GetPoints())
-// 	}
-// 	fmt.Printf("The winner is: %s \n", winner.GetName())
-
-// }
-
-// func (g *UnoGame) hasNextRound() bool {
-// 	return g.round <= g.totalRound
-// }
+func (g *UnoGame) GetTopCardFromStack() *UnoCard {
+	if len(g.stack) == 0 {
+		return nil
+	}
+	return g.stack[len(g.stack)-1]
+}

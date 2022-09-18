@@ -11,10 +11,9 @@ type ShowdownAIPlayer struct {
 }
 
 func NewShowdownAIPlayer() (p *ShowdownAIPlayer) {
-	showdownAIPlayer := &ShowdownAIPlayer{
+	return &ShowdownAIPlayer{
 		AbstractShowdownPlayer: NewAbstractShowdownPlayer(),
 	}
-	return showdownAIPlayer
 }
 
 func (p *ShowdownAIPlayer) NameSelf() string {

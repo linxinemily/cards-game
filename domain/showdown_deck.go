@@ -1,19 +1,15 @@
 package domain
 
 import (
-	"bigger-or-smaller-game/domain/enum"
+	"bigger-or-smaller-game/domain/enum/showdown"
 )
-
-type ShowdownDeck struct {
-	cards []*ShowdownCard
-}
 
 func NewShowdownDeck() (d *Deck[ShowdownCard]) {
 	cards := make([]*ShowdownCard, 52)
 	var count int
-	for suit := enum.Suit(0); suit < enum.Spade+1; suit++ {
-		for rank := enum.Rank(0); rank < enum.A+1; rank++ {
-			cards[count] = NewCard(rank, suit)
+	for suit := showdown_enum.Suit(0); suit < showdown_enum.Spade+1; suit++ {
+		for rank := showdown_enum.Rank(0); rank < showdown_enum.A+1; rank++ {
+			cards[count] = NewShowdownCard(rank, suit)
 			count++
 		}
 	}

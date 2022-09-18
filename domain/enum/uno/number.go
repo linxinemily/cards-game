@@ -1,9 +1,11 @@
-package enum
+package uno_enum
 
-type Rank int
+type Number int
 
 const (
-	Two Rank = iota
+	Zero Number = iota
+	One
+	Two
 	Three
 	Four
 	Five
@@ -11,15 +13,14 @@ const (
 	Seven
 	Eight
 	Night
-	Ten
-	J
-	Q
-	K
-	A
 )
 
-func (s Rank) String() string {
+func (s Number) String() string {
 	switch s {
+	case Zero:
+		return "0"
+	case One:
+		return "1"
 	case Two:
 		return "2"
 	case Three:
@@ -36,16 +37,6 @@ func (s Rank) String() string {
 		return "8"
 	case Night:
 		return "9"
-	case Ten:
-		return "10"
-	case J:
-		return "J"
-	case Q:
-		return "Q"
-	case K:
-		return "K"
-	case A:
-		return "A"
 	default:
 		return "Unknown"
 	}
