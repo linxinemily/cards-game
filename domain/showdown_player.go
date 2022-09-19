@@ -1,20 +1,13 @@
 package domain
 
 type ShowdownPlayer interface {
-	NameSelf() (name string)
+	Player[ShowdownCard]
 	ToUseExchangeChance() bool
 	ChoosePlayerForExchange() (showdownPlayer ShowdownPlayer)
-	Show() (card *ShowdownCard)
-	AddCardIntoHand(card ShowdownCard)
 	CanUseExchangeHand() bool
-	GetName() (name string)
-	SetName(string)
 	SetExchangeHand(*ExchangeHand)
 	GetPoints() int
 	SetPoints(int)
-	SetGame(any)
-	GetHand() []ShowdownCard
-	SetHand([]ShowdownCard)
 	GetExchangeHand() *ExchangeHand
 	removeCardFromHand(i int) (*ShowdownCard, error)
 }

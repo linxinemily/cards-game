@@ -1,14 +1,7 @@
 package domain
 
 type UnoPlayer interface {
-	NameSelf() (name string)
-	Show() (card *UnoCard)
-	AddCardIntoHand(card UnoCard)
-	SetName(string)
-	GetName() (name string)
-	SetGame(any)
-	GetHand() []UnoCard
-	SetHand([]UnoCard)
+	Player[UnoCard]
 	hasNoCardCanShow(UnoCard) bool
 }
 
