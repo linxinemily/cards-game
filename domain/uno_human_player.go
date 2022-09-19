@@ -30,7 +30,7 @@ func (p *UnoHumanPlayer) Show() (card *UnoCard) {
 
 	var choseCard *UnoCard
 
-	CardOfStackTop := p.game.stack[len(p.game.stack)-1]
+	CardOfStackTop := p.game.GetTopCardFromStack()
 
 	for choseCard == nil {
 

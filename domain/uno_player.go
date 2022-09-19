@@ -29,7 +29,7 @@ func NewAbstractUnoPlayer() (pa AbstractUnoPlayer) {
 func (p *AbstractUnoPlayer) hasNoCardCanShow(topCard UnoCard) bool {
 	var hasNoCardCanShow = true
 	for _, card := range p.GetHand() {
-		if card.Color == topCard.Color || card.Number == topCard.Number {
+		if p.isValidateCard(&card, &topCard) {
 			return false
 		}
 	}

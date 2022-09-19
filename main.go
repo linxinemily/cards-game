@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	game := domain.NewShowdownGame()
+	game := domain.NewUnoGame()
 
 	game.Start()
 }

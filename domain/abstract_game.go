@@ -81,3 +81,10 @@ func (g *AbstractGame[C, P]) playerDrawCards() {
 func shouldBreakDrawCards[C Card[C]](deck Deck[C], count int) bool {
 	return len(deck.getCards()) == 0
 }
+
+func (g *AbstractGame[C, P]) GetTopCardFromStack() *C {
+	if len(g.stack) == 0 {
+		return nil
+	}
+	return g.stack[len(g.stack)-1]
+}

@@ -99,9 +99,3 @@ func (g *UnoGame) safeDrawCard() *UnoCard {
 	return g.deck.DrawCard()
 }
 
-func (g *UnoGame) GetTopCardFromStack() *UnoCard {
-	if len(g.stack) == 0 {
-		return nil
-	}
-	return g.stack[len(g.stack)-1]
-}
