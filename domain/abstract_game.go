@@ -4,6 +4,25 @@ import (
 	"fmt"
 )
 
+type IGame[C Card[C], P Player[C]] struct {
+	Game[C, P]
+}
+
+func (g *IGame[C, P]) Start() {
+	g.init()
+
+	g.playerDrawCards()
+
+	for {
+		if !g.hasNextRound() {
+			break
+		}
+		g.takeRound()
+	}
+
+	g.end()
+}
+
 type Game[C Card[C], P Player[C]] interface {
 	init()
 	initPlayers() []P
@@ -11,7 +30,6 @@ type Game[C Card[C], P Player[C]] interface {
 	hasNextRound() bool
 	takeRound()
 	end()
-	Start()
 }
 
 func NewAbstractGame[C Card[C], P Player[C]]() *AbstractGame[C, P] {
@@ -33,21 +51,6 @@ type AbstractGame[C Card[C], P Player[C]] struct {
 	takeRound            func()
 	end                  func()
 	stack                []*C
-}
-
-func (g *AbstractGame[C, P]) Start() {
-	g.init()
-
-	g.playerDrawCards()
-
-	for {
-		if !g.hasNextRound() {
-			break
-		}
-		g.takeRound()
-	}
-
-	g.end()
 }
 
 func (g *AbstractGame[C, P]) init() {
@@ -82,7 +85,7 @@ func shouldBreakDrawCards[C Card[C]](deck Deck[C], count int) bool {
 	return len(deck.getCards()) == 0
 }
 
-func (g *AbstractGame[C, P]) GetTopCardFromStack() *C {
+func (g *AbstractGame[C, P]) getTopCardFromStack() *C {
 	if len(g.stack) == 0 {
 		return nil
 	}

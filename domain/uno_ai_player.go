@@ -27,7 +27,7 @@ func (p *UnoAIPlayer) Show() *UnoCard {
 	rand.Seed(time.Now().UnixNano())
 
 	var validateCardsIdx []int
-	CardOfStackTop := p.game.GetTopCardFromStack()
+	CardOfStackTop := p.game.getTopCardFromStack()
 
 	for index, card := range p.hand {
 		if p.isValidateCard(&card, CardOfStackTop) {

@@ -5,7 +5,9 @@ import (
 )
 
 func main() {
-	game := domain.NewUnoGame()
+	game := domain.IGame[domain.UnoCard, domain.UnoPlayer]{
+		Game: domain.NewUnoGame(),
+	}
 
 	game.Start()
 }

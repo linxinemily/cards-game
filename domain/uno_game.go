@@ -44,7 +44,7 @@ func (g *UnoGame) takeRound() {
 	fmt.Printf("Round %d \n", g.round)
 	fmt.Println("--------------------")
 
-	topCard := g.GetTopCardFromStack()
+	topCard := g.getTopCardFromStack()
 	if topCard == nil {
 		fmt.Println("there are no card in stack, draw a card from deck")
 		topCard = g.safeDrawCard()
@@ -56,7 +56,7 @@ func (g *UnoGame) takeRound() {
 		fmt.Printf("It's %s's turn \n", p.GetName())
 
 		//玩家沒有可出的牌
-		if p.hasNoCardCanShow(*g.GetTopCardFromStack()) {
+		if p.hasNoCardCanShow(*g.getTopCardFromStack()) {
 			// 玩家就必須從牌堆中抽一張牌，如果此時牌堆空了，則會先把檯面上除了最新的牌以外的牌放回牌堆中進行洗牌
 			newCard := g.safeDrawCard()
 			p.SetHand(append(p.GetHand(), *newCard))
