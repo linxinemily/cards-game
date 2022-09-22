@@ -55,7 +55,7 @@ func (p *ShowdownAIPlayer) Show() *ShowdownCard {
 		i = rand.Intn(len(p.hand) - 1)
 	}
 
-	removed, _ := p.removeCardFromHand(i)
+	removed, _ := p.removeCardFromHandByIdx(i)
 
 	return removed
 }

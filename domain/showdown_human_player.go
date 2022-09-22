@@ -100,7 +100,7 @@ func (p *ShowdownHumanPlayer) Show() (card *ShowdownCard) {
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		intVar, err = strconv.Atoi(scanner.Text())
-		removed, err = p.removeCardFromHand(intVar)
+		removed, err = p.removeCardFromHandByIdx(intVar)
 
 		first = false
 	}

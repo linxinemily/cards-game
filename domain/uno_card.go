@@ -15,5 +15,9 @@ func NewUnoCard(color uno_enum.Color, number uno_enum.Number) (c *UnoCard) {
 }
 
 func (c UnoCard) CompareTo(card UnoCard) int {
-	return 0
+	if c.Color == card.Color && c.Number == card.Number {
+		return 0
+	} else {
+		return -1
+	}
 }

@@ -17,12 +17,6 @@ func NewShowdownGame() *ShowdownGame {
 
 	showdownGame.AbstractGame = *NewAbstractGame[ShowdownCard, ShowdownPlayer]()
 
-	showdownGame.AbstractGame.initPlayers = showdownGame.initPlayers
-	showdownGame.AbstractGame.hasNextRound = showdownGame.hasNextRound
-	showdownGame.AbstractGame.takeRound = showdownGame.takeRound
-	showdownGame.AbstractGame.end = showdownGame.end
-	showdownGame.deck = NewShowdownDeck()
-
 	return showdownGame
 }
 

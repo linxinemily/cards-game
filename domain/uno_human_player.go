@@ -30,8 +30,6 @@ func (p *UnoHumanPlayer) Show() (card *UnoCard) {
 
 	var choseCard *UnoCard
 
-	CardOfStackTop := p.game.getTopCardFromStack()
-
 	for choseCard == nil {
 
 		for i, c := range p.hand {
@@ -46,22 +44,12 @@ func (p *UnoHumanPlayer) Show() (card *UnoCard) {
 		scanner.Scan()
 		intVar, err := strconv.Atoi(scanner.Text())
 
-		card, err = p.getCardFromHand(intVar)
+		choseCard, err = p.getCardFromHand(intVar)
 		if err != nil {
 			fmt.Println(err.Error())
 			continue
 		}
-
-		if !p.isValidateCard(card, CardOfStackTop) {
-			fmt.Println("Invalid card.")
-			continue
-		}
-
-		choseCard, _ = p.removeCardFromHand(intVar)
-
 	}
-
-	fmt.Printf("show card: color %s, number %s \n", choseCard.Color, choseCard.Number)
 
 	return choseCard
 }

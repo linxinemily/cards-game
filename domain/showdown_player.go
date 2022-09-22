@@ -9,18 +9,14 @@ type ShowdownPlayer interface {
 	GetPoints() int
 	SetPoints(int)
 	GetExchangeHand() *ExchangeHand
-	removeCardFromHand(i int) (*ShowdownCard, error)
+	removeCardFromHandByIdx(i int) (*ShowdownCard, error)
 }
 
 type AbstractShowdownPlayer struct {
 	AbstractPlayer[ShowdownCard, ShowdownPlayer]
-	exchangeChance          int
-	points                  int
-	exchangeHand            *ExchangeHand
-	ChoosePlayerForExchange func() (showdownPlayer ShowdownPlayer)
-	NameSelf                func() (name string)
-	ToUseExchangeChance     func() bool
-	Show                    func() (card *ShowdownCard)
+	exchangeChance int
+	points         int
+	exchangeHand   *ExchangeHand
 }
 
 func NewAbstractShowdownPlayer() (pa AbstractShowdownPlayer) {

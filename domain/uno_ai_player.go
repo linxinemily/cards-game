@@ -26,21 +26,10 @@ func (p *UnoAIPlayer) NameSelf() string {
 func (p *UnoAIPlayer) Show() *UnoCard {
 	rand.Seed(time.Now().UnixNano())
 
-	var validateCardsIdx []int
-	CardOfStackTop := p.game.getTopCardFromStack()
-
-	for index, card := range p.hand {
-		if p.isValidateCard(&card, CardOfStackTop) {
-			validateCardsIdx = append(validateCardsIdx, index)
-		}
-	}
-
 	var i int
-	if len(validateCardsIdx) > 1 {
-		i = rand.Intn(len(validateCardsIdx) - 1)
+	if len(p.hand) > 1 {
+		i = rand.Intn(len(p.hand) - 1)
 	}
 
-	removed, _ := p.removeCardFromHand(validateCardsIdx[i])
-
-	return removed
+	return &p.hand[i]
 }

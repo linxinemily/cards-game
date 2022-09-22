@@ -2,6 +2,7 @@ package domain
 
 import (
 	"errors"
+	"fmt"
 )
 
 type Player[C Card[C]] interface {
@@ -13,13 +14,13 @@ type Player[C Card[C]] interface {
 	GetHand() []C
 	SetHand([]C)
 	SetGame(any)
+	removeCardFromHand(card C) *C
 }
 
 type AbstractPlayer[C Card[C], P Player[C]] struct {
-	name     string
-	hand     []C
-	NameSelf func() string
-	game     *AbstractGame[C, P]
+	name string
+	hand []C
+	game *AbstractGame[C, P]
 }
 
 func (p *AbstractPlayer[C, P]) GetName() string {
@@ -54,7 +55,7 @@ func (p *AbstractPlayer[C, P]) getCardFromHand(i int) (*C, error) {
 	return &p.hand[i], nil
 }
 
-func (p *AbstractPlayer[C, P]) removeCardFromHand(i int) (*C, error) {
+func (p *AbstractPlayer[C, P]) removeCardFromHandByIdx(i int) (*C, error) {
 	if i < 0 || i > len(p.hand)-1 {
 		return nil, errors.New("invalid index")
 	}
@@ -62,4 +63,15 @@ func (p *AbstractPlayer[C, P]) removeCardFromHand(i int) (*C, error) {
 	p.hand[i] = p.hand[len(p.hand)-1]
 	p.hand = p.hand[:len(p.hand)-1]
 	return &card, nil
+}
+
+func (p *AbstractPlayer[C, P]) removeCardFromHand(card C) *C {
+	fmt.Println(p.hand)
+	for i, handCard := range p.hand {
+		if handCard.CompareTo(card) == 0 {
+			r, _ := p.removeCardFromHandByIdx(i)
+			return r
+		}
+	}
+	return nil
 }
