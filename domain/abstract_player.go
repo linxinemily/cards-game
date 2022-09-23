@@ -2,7 +2,6 @@ package domain
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Player[C Card[C]] interface {
@@ -66,7 +65,6 @@ func (p *AbstractPlayer[C, P]) removeCardFromHandByIdx(i int) (*C, error) {
 }
 
 func (p *AbstractPlayer[C, P]) removeCardFromHand(card C) *C {
-	fmt.Println(p.hand)
 	for i, handCard := range p.hand {
 		if handCard.CompareTo(card) == 0 {
 			r, _ := p.removeCardFromHandByIdx(i)

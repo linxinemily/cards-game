@@ -5,15 +5,29 @@ import (
 )
 
 func main() {
-	game := domain.IGame[domain.UnoCard, domain.UnoPlayer]{
+	/** Showdown Game **/
+	showdownGame := domain.IGame[domain.ShowdownCard, domain.ShowdownPlayer]{
+		Game: domain.NewShowdownGame(),
+	}
+	showdownGame.InitPlayers([]domain.ShowdownPlayer{
+		domain.NewShowdownAIPlayer(),
+		domain.NewShowdownAIPlayer(),
+		domain.NewShowdownAIPlayer(),
+		domain.NewShowdownHumanPlayer(),
+	})
+
+	showdownGame.Start(*domain.NewShowdownDeck())
+
+	/** Uno Game **/
+	UnoGame := domain.IGame[domain.UnoCard, domain.UnoPlayer]{
 		Game: domain.NewUnoGame(),
 	}
-	game.InitPlayers([]domain.UnoPlayer{
+	UnoGame.InitPlayers([]domain.UnoPlayer{
 		domain.NewUnoAIPlayer(),
 		domain.NewUnoAIPlayer(),
 		domain.NewUnoAIPlayer(),
 		domain.NewUnoHumanPlayer(),
 	})
 
-	game.Start(*domain.NewUnoDeck())
+	UnoGame.Start(*domain.NewUnoDeck())
 }

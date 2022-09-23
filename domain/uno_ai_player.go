@@ -25,11 +25,9 @@ func (p *UnoAIPlayer) NameSelf() string {
 
 func (p *UnoAIPlayer) Show() *UnoCard {
 	rand.Seed(time.Now().UnixNano())
-
 	var i int
 	if len(p.hand) > 1 {
-		i = rand.Intn(len(p.hand) - 1)
+		i = rand.Intn(len(p.hand))
 	}
-
 	return &p.hand[i]
 }

@@ -36,18 +36,13 @@ func (g *UnoGame) takeRound() {
 
 		//玩家沒有可出的牌
 		if g.hasNoCardCanShow(p) {
-
-			fmt.Println(123)
 			// 玩家就必須從牌堆中抽一張牌，如果此時牌堆空了，則會先把檯面上除了最新的牌以外的牌放回牌堆中進行洗牌
 			newCard := g.safeDrawCard()
 			p.SetHand(append(p.GetHand(), *newCard))
-
 		} else {
 			card := p.Show()
 			for !g.isValidateCard(card) {
 				card = p.Show()
-				fmt.Println(card)
-
 			}
 
 			removed := p.removeCardFromHand(*card)
